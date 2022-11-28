@@ -44,8 +44,13 @@ client = StableDiffusionBotUI(intents=intents)
     model=[app_commands.Choice(name=d["model_name"], value=d["title"])
            for d in client.model_data]
 )
-async def generate(interaction: discord.Interaction, prompt: str, negative_prompt: str, model: app_commands.Choice[str], seed: int=-1):
+async def generate(interaction: discord.Interaction, prompt: str, model: app_commands.Choice[str], nsfw: bool, negative_prompt: str = "", seed: int = -1):
     await interaction.response.defer()
+
+    if interaction.guild is not None:
+        if nsfw is True and interaction.channel.nsfw is not True:
+            await interaction.followup.send(embed=discord.Embed(description="NSFWコンテンツはNSFWチャンネル以外では生成できません！", color=discord.Colour.red))
+            return
 
     payload = {
         "prompt": prompt,
