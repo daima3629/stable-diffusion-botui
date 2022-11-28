@@ -6,7 +6,6 @@ import io
 import base64
 import json
 import requests
-from typing import Literal
 
 import dotenv
 dotenv.load_dotenv()
@@ -79,12 +78,5 @@ async def generate(interaction: discord.Interaction, prompt: str, negative_promp
     )
     await interaction.followup.send(embed=embed, file=file)
 
-
-@bot.tree.command(description="nsfwチャンネル以外で生成を行えなくするかを設定します")
-@app_commands.guild_only()
-@app_commands.default_permissions(manage_guild=true)
-async def nsfw_mode(interaction, mode: Literal["on", "off"]):
-    await update_nsfw_setting(interaction.guild) # TODO: JSONファイルを編集する
-    await interaction.send_message(f"NSFW設定を`{mode}`に設定しました。")
 
 client.run(os.getenv("DISCORD_TOKEN"))
