@@ -44,14 +44,12 @@ client = StableDiffusionBotUI(intents=intents)
     model=[app_commands.Choice(name=d["model_name"], value=d["title"])
            for d in client.model_data]
 )
-async def generate(interaction: discord.Interaction, prompt: str, negative_prompt: str, model: app_commands.Choice[str], width: int=512, height: int=512, seed: int=-1):
+async def generate(interaction: discord.Interaction, prompt: str, negative_prompt: str, model: app_commands.Choice[str], seed: int=-1):
     await interaction.response.defer()
 
     payload = {
         "prompt": prompt,
         "negative_prompt": negative_prompt,
-        "width": width,
-        "height": height,
         "seed": seed,
         "override_settings": {
             "sd_model_checkpoint": model.value
